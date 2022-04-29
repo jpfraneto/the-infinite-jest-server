@@ -28,6 +28,7 @@ router.get('/', (req, res) => {
           now - presentRecommendation.startingRecommendationTimestamp;
         let elapsedSeconds = Math.floor(elapsedTime / 1000);
         res.render('eternity', {
+          youtubeID: presentRecommendation.youtubeID,
           elapsedSeconds: elapsedSeconds,
           presentRecommendation: {
             url: presentRecommendation.url,
@@ -682,7 +683,6 @@ router.post('/api/newmedia', async (req, res) => {
     newRecommendation.status = 'future';
     newRecommendation.url = req.body.url;
     newRecommendation.type = req.body.mediatype;
-    newRecommendation.duration = Number(req.body.duration);
     newRecommendation.recommendationDate = new Date();
     newRecommendation.youtubeID = getYoutubeID(newRecommendation.url);
     let apiKey = process.env.YOUTUBE_APIKEY;
