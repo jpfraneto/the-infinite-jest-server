@@ -31,6 +31,7 @@ router.get('/', (req, res) => {
           youtubeID: presentRecommendation.youtubeID,
           elapsedSeconds: elapsedSeconds,
           presentRecommendation: {
+            username: presentRecommendation.author.username,
             url: presentRecommendation.url,
             description: presentRecommendation.description,
           },
