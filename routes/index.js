@@ -673,10 +673,28 @@ router.get('/verifyEmail/:code', function (req, res) {
     });
 });
 
-router.post('/api/newmedia', (req, res) => {
+router.post('/api/newmedia', async (req, res) => {
   //Add the media to the db
-  console.log('the req body is:', req.body);
-  res.json({ 123: 456 });
+  try {
+    let newRecommendation = new Recommendation();
+    newRecommendation.author = {
+      username: req.body.username,
+    };
+    newRecommendation.description = req.body.description;
+    newRecommendation.status = 'future';
+    newRecommendation.type = req.body.mediatype;
+    newRecommendation.recommendationDate = new Date();
+    const response = await newRecommendation.save();
+    console.log(
+      'the response after saving the new recomendation is: ',
+      response
+    );
+
+    res.json({ msg: 'The recomendation was added to the db', success: true });
+  } catch (error) {
+    console.log('the error is: ', error);
+    res.json({ msg: 'There was an error', success: false });
+  }
 });
 
 router.get('/api/user_data', function (req, res) {
