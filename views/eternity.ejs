@@ -18,7 +18,7 @@
 
 <body>
     <div class="headerBanner">
-        <h1><a id="headerTitle" href="/">THE INFINITE JEST</a></h1>
+        <h1>The Infinite Jest</h1>
     </div>
 
     <div class="box" id="systemDisplay">
@@ -26,23 +26,21 @@
         <div id="middleColumn" class="column middle text-center">
 
             <div id="recommendationFrame">
-                <div class="iFrameContainer" id="mediaContainer">
+                <div class="playerWrapper" id="mediaContainer">
                     <iframe id="presentPlayer" width="640" height="360"
                         src="https://www.youtube.com/embed/<%= youtubeID %>?start=<%=elapsedSeconds%>&autoplay=1&enablejsapi=1&mute=1"
-                        style="border: solid 4px #37474F" allow="autoplay" allowFullScreen></iframe>
+                        class='rainbowBox' allow="autoplay" allowFullScreen></iframe>
                 </div>
 
-                <div class="headerBanner" id="controlsDiv">
-                    <% if(!currentUser){ %>
-                        <a id="favoritesButton" class=' controlsBtn'
-                            onclick="alert('Hello, you need to be logged in to add favorites!')">Favorites</a>
-                        <% } %>
-                            <a id="addFavoriteButton" class='controlsBtn' style="display: none;">Add Favorite</a>
-                            <a id="removeFavoriteButton" class='controlsBtn' style="display: none;">Remove Favorite</a>
-                            <a id="recommendationInfoBtn" class='controlsBtn'>Recommendation Info</a>
-                            <div id="pastButtons" style="display: none;">
-                                <a id="randomRecommendationBtn" class='controlsBtn'>Random</a>
-                            </div>
+                <!-- <div class="headerBanner" id="controlsDiv">
+
+                    <a id="recommendationInfoBtn" class='controlsBtn'>Recommendation Info</a>
+
+                </div> -->
+                <div>
+                    <p>This video was added by jpfraneto. You can visit his/her profile and check his other stuff here:
+                        <a target="_blank" href="https://home.theinfinitejest.tv/u/jpfraneto">Visit</a>
+                    </p>
                 </div>
 
                 <div id="presentRecommendationInformation" style="display:none">
@@ -59,11 +57,7 @@
     </div>
 
     <div class="footer">
-        <p id="tosf"><span><a target="_blank" href="http://www.theopensourcefactory.com">The Open Source Factory
-                    ™
-                    .</a></span></p>
-        <a id="addRecommendationBtn">Add Music Recommendation</a><br>
-        <p id="footerMessage">This project is in memory of David Foster Wallace and all of those who had lost
+        <p>This project is in memory of David Foster Wallace and all of those who lost
             the fight
             against their own demons.</p>
     </div>
