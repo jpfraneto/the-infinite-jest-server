@@ -15,6 +15,7 @@ let express = require('express'),
   Cycle = require('./models/cycle'),
   theSource = require('./middleware/theSource'),
   nodemailer = require('nodemailer'),
+  cors = require('cors');
   seedDB = require('./seeds2');
 
 let systemStatus;
@@ -30,6 +31,7 @@ mongoose.connect(process.env.DATABASE_MONGODB, {
 });
 
 app.use(express.json());
+app.use(cors());
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));

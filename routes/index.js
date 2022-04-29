@@ -674,6 +674,7 @@ router.get('/verifyEmail/:code', function (req, res) {
 });
 
 router.post('/api/newmedia', (req, res) => {
+  //Add the media to the db
   console.log('the req body is:', req.body);
   res.json({ 123: 456 });
 });
