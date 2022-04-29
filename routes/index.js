@@ -11,11 +11,15 @@ let Cycle = require('../models/cycle');
 let theSource = require('../middleware/theSource');
 const cryptoRandomString = require('crypto-random-string');
 
+function getYoutubeID(url) {
+  url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+  return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+}
+
 let today = new Date();
 // Root Route
 router.get('/', (req, res) => {
   Recommendation.findOne({ status: 'present' })
-    .populate('comments')
     .exec()
     .then(presentRecommendation => {
       let now = new Date().getTime();
@@ -24,16 +28,10 @@ router.get('/', (req, res) => {
           now - presentRecommendation.startingRecommendationTimestamp;
         let elapsedSeconds = Math.floor(elapsedTime / 1000);
         res.render('eternity', {
-          youtubeID: presentRecommendation.youtubeID,
           elapsedSeconds: elapsedSeconds,
           presentRecommendation: {
-            name: presentRecommendation.name,
-            recommenderName:
-              presentRecommendation.author.name ||
-              presentRecommendation.author.username,
-            country: presentRecommendation.author.country,
+            url: presentRecommendation.url,
             description: presentRecommendation.description,
-            comments: presentRecommendation.comments,
           },
         });
       } else {
@@ -686,13 +684,44 @@ router.post('/api/newmedia', async (req, res) => {
     newRecommendation.type = req.body.mediatype;
     newRecommendation.duration = Number(req.body.duration);
     newRecommendation.recommendationDate = new Date();
-    const response = await newRecommendation.save();
-    console.log(
-      'the response after saving the new recomendation is: ',
-      response
-    );
-
-    res.json({ msg: 'The recomendation was added to the db', success: true });
+    newRecommendation.youtubeID = getYoutubeID(newRecommendation.url);
+    let apiKey = process.env.YOUTUBE_APIKEY;
+    let getRequestURL =
+      'https://www.googleapis.com/youtube/v3/videos?id=' +
+      newRecommendation.youtubeID +
+      '&key=' +
+      apiKey +
+      '&fields=items(id,snippet(title),statistics,%20contentDetails(duration))&part=snippet,statistics,%20contentDetails';
+    axios.get(getRequestURL).then(function (response) {
+      if (response.data.items.length > 0) {
+        let durationISO = response.data.items[0].contentDetails.duration;
+        newRecommendation.name = response.data.items[0].snippet.title;
+        newRecommendation.duration = moment
+          .duration(durationISO, moment.ISO_8601)
+          .asMilliseconds();
+        newRecommendation.save(() => {
+          console.log(
+            'A new recommendation was saved by ' +
+              newRecommendation.author.username +
+              ', with the following youtube ID: ' +
+              newRecommendation.youtubeID
+          );
+          res.json({
+            answer:
+              'The recommendation ' +
+              newRecommendation.name +
+              ' was added successfully to the future! Thanks ' +
+              newRecommendation.author.username +
+              ' for your support.',
+          });
+        });
+      } else {
+        res.json({
+          answer:
+            'There was an error retrieving the recommendation from youtube. Please try again later, sorry for all the trouble that this means',
+        });
+      }
+    });
   } catch (error) {
     console.log('the error is: ', error);
     res.json({ msg: 'There was an error', success: false });
