@@ -684,6 +684,7 @@ router.post('/api/newmedia', async (req, res) => {
     newRecommendation.status = 'future';
     newRecommendation.url = req.body.url;
     newRecommendation.type = req.body.mediatype;
+    newRecommendation.duration = Number(req.body.duration);
     newRecommendation.recommendationDate = new Date();
     const response = await newRecommendation.save();
     console.log(
