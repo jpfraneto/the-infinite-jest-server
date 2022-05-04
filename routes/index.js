@@ -18,6 +18,48 @@ function getYoutubeID(url) {
 
 let today = new Date();
 // Root Route
+router.get('/api/present', (req, res) => {
+  try {
+    Recommendation.findOne({ status: 'present' })
+      .exec()
+      .then(presentRecommendation => {
+        let now = new Date().getTime();
+        if (presentRecommendation) {
+          let elapsedTime =
+            now - presentRecommendation.startingRecommendationTimestamp;
+          let elapsedSeconds = Math.floor(elapsedTime / 1000);
+          res.json({
+            recommendation: {
+              youtubeID: presentRecommendation.youtubeID,
+              elapsedSeconds: elapsedSeconds,
+              presentRecommendation: {
+                username: presentRecommendation.author.username,
+                url: presentRecommendation.url,
+                description: presentRecommendation.description,
+              },
+            },
+            message: 'There is a recommendation in the present',
+            success: true,
+          });
+        } else {
+          console.log(
+            'There was not a recommendation in the present. The check system function will run now'
+          );
+          theSource.checkSystem();
+          res.json({
+            message: 'There was not a recommendation in the present',
+            success: false,
+          });
+        }
+      });
+  } catch (error) {
+    res.json({
+      message: 'There was not a recommendation in the present',
+      success: false,
+    });
+  }
+});
+
 router.get('/', (req, res) => {
   Recommendation.findOne({ status: 'present' })
     .exec()
