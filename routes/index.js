@@ -754,6 +754,7 @@ router.post('/api/newmedia', async (req, res) => {
               ', with the following youtube ID: ' +
               newRecommendation.youtubeID
           );
+          console.log('the new recommendation is: ', newRecommendation)
           res.json({
             newRecommendation: newRecommendation,
             success: true,
