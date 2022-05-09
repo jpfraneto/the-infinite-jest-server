@@ -12,8 +12,8 @@ let theSource = require('../middleware/theSource');
 const cryptoRandomString = require('crypto-random-string');
 
 function getYoutubeID(url) {
-  url = url.split(/^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(shorts\/)|(watch\?))\??v?=?([^#&?]*).*/);
-  return undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+  let regex = /(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))/gm;
+  return regex.exec(url)[3];
 }
 
 let today = new Date();
