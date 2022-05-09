@@ -174,12 +174,7 @@ theSource.closeCycle = (numberOfRecommendations = 0) => {
 };
 
 theSource.tweetRecommendation = newPresentRecommendation => {
-  console.log(
-    'inside the tweet recommendation function, the new presentrecommendation is: ',
-    newPresentRecommendation
-  );
-  const newTweet = `The following recommendation, shared by @${newPresentRecommendation.author.username}, was brought to the present of #theinfinitejest: \n\n https://www.youtube.com/watch?v=${newPresentRecommendation.youtubeId} \n\n www.theinfinitejest.tv`;
-
+  const newTweet = `The following recommendation, shared by @${newPresentRecommendation.author.username}, was brought to the present of #theinfinitejest: \n\n https://www.youtube.com/watch?v=${newPresentRecommendation.youtubeID} \n\n www.theinfinitejest.tv`;
   const client = new TwitterApi({
     appKey: process.env.TWITTER_API_KEY,
     appSecret: process.env.TWITTER_API_KEY_SECRET,
