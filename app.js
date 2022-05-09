@@ -50,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // setTimeout(theSource.bigBang);
 
-console.log('The app.js file is running again.');
+// console.log('The app.js file is running again.');
 setTimeout(theSource.checkSystem);
 
 const sessionConfig = {

@@ -1,3 +1,4 @@
+const { TwitterApi } = require('twitter-api-v2');
 const axios = require('axios');
 const moment = require('moment');
 const Recommendation = require('../models/recommendation');
@@ -96,6 +97,7 @@ theSource.theMind = () => {
             theSource.sendRecommendationToPast,
             newPresentRecommendation.duration
           );
+          theSource.tweetRecommendation(newPresentRecommendation);
         });
       } else {
         theSource.bigBang();
@@ -169,6 +171,28 @@ theSource.closeCycle = (numberOfRecommendations = 0) => {
     .then(() => {
       theSource.openCycle();
     });
+};
+
+theSource.tweetRecommendation = newPresentRecommendation => {
+  console.log(
+    'inside the tweet recommendation function, the new presentrecommendation is: ',
+    newPresentRecommendation
+  );
+  const newTweet = `The following recommendation, shared by @${newPresentRecommendation.author.username}, was brought to the present of #theinfinitejest: \n\n https://www.youtube.com/watch?v=${newPresentRecommendation.youtubeId} \n\n www.theinfinitejest.tv`;
+
+  const client = new TwitterApi({
+    appKey: process.env.TWITTER_API_KEY,
+    appSecret: process.env.TWITTER_API_KEY_SECRET,
+    accessToken: process.env.TWITTER_ACCESS_TOKEN,
+    accessSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  });
+  client.v2
+    .tweet(newTweet)
+    .then(val => {
+      console.log(val);
+      console.log('The tweet was added to the stream of jpfraneto!');
+    })
+    .catch(err => console.log(err));
 };
 
 module.exports = theSource;
