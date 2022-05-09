@@ -60,6 +60,11 @@ router.get('/api/present', (req, res) => {
   }
 });
 
+router.post('/api/nextrecommendation' , (req, res) => {
+  console.log(req.body);
+  
+})
+
 router.get('/', (req, res) => {
   Recommendation.findOne({ status: 'present' })
     .exec()
@@ -750,6 +755,8 @@ router.post('/api/newmedia', async (req, res) => {
               newRecommendation.youtubeID
           );
           res.json({
+            newRecommendation: newRecommendation,
+            success: true,
             answer:
               'The recommendation ' +
               newRecommendation.name +
@@ -760,6 +767,7 @@ router.post('/api/newmedia', async (req, res) => {
         });
       } else {
         res.json({
+          success: false,
           answer:
             'There was an error retrieving the recommendation from youtube. Please try again later, sorry for all the trouble that this means',
         });
