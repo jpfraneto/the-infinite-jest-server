@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'production') {
 // setTimeout(theSource.bigBang);
 
 // console.log('The app.js file is running again.');
-// setTimeout(theSource.checkSystem);
+setTimeout(theSource.checkSystem);
 
 const sessionConfig = {
   secret: 'Content to nourish your soul and activate your mind',
