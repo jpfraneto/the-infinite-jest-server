@@ -75,6 +75,7 @@ theSource.theMind = () => {
       if (presentRecommendation.length > 1) {
         theSource.checkSystem();
       } else if (futureRecommendations.length > 0) {
+        console.log('IN HERE!');
         let randomIndex = Math.floor(
           Math.random() * futureRecommendations.length
         );
