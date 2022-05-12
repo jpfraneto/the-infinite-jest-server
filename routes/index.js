@@ -34,6 +34,8 @@ router.get('/api/present', (req, res) => {
               elapsedSeconds: elapsedSeconds,
               presentRecommendation: {
                 username: presentRecommendation.author.username,
+                _id: presentRecommendation._id,
+                mediatype: presentRecommendation.mediatype,
                 url: presentRecommendation.url,
                 description: presentRecommendation.description,
               },
